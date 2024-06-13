@@ -7,15 +7,13 @@ import (
 	"path"
 )
 
-type Team struct {
-	Name   string
-	Wins   int
-	Losses int
-	Draws  int
+type team struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 func showTeam(w http.ResponseWriter, r *http.Request) {
-	team := Team{"Team Korea", 1, 4, 0}
+	team := team{"1", "Team Korea"}
 	fp := path.Join("views", "index.html")
 	temp, err := template.ParseFiles(fp)
 
