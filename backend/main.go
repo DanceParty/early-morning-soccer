@@ -2,14 +2,21 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"path"
+
+	"github.com/gin-gonic/gin"
 )
 
 type team struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+}
+
+var teams = []team{
+	{ID: "1", Name: "Team Korea"},
+	{ID: "2", Name: "Team USA"},
+	{ID: "3", Name: "Team South Africa"},
 }
 
 func showTeam(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +34,12 @@ func showTeam(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getTeams(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, teams)
+}
+
 func main() {
-	http.HandleFunc("/", showTeam)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	router := gin.Default()
+	router.GET("/teams", getTeams)
+	router.Run("localhost:8000")
 }
